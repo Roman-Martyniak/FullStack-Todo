@@ -1,0 +1,139 @@
+{
+    "apis": ["./routes/*.ts"],
+    "definition": {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "Todo List Express API with Swagger",
+            "version": "0.1.0",
+            "description": "This is a simple CRUD API application made with Express and documented with Swagger",
+            "license": {
+                "name": "MIT",
+                "url": "https://spdx.org/licenses/MIT.html"
+            },
+            "contact": {
+                "name": "mazerqoDev",
+                "email": "roman.martyniakdev@gmail.com"
+            }
+        },
+        "servers": [
+            {
+                "url": "http://localhost:8000/api/todo"
+            }
+        ],
+        "tags": [
+            {
+                "name": "Todo",
+                "description": "The todo managing API"
+            }
+        ],
+        "paths": {
+            "/": {
+                "post": {
+                    "summary": "Create a new todo",
+                    "tags": ["Todo"],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "../schemas/todo-schema.ts"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "The created todo.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "../schemas/todo-schema.ts"
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Server error"
+                        }
+                    }
+                },
+                "get": {
+                    "summary": "Get all todo",
+                    "tags": ["Todo"],
+                    "responses": {
+                        "200": {
+                            "description": "Get list of todos.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "../schemas/todo-schema.ts"
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Server error"
+                        }
+                    }
+                }
+            },
+            "/{id}": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "get": {
+                    "summary": "Get todo by id",
+                    "tags": ["Todo"],
+                    "responses": {
+                        "200": {
+                            "description": "Get todo by id.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "../schemas/todo-schema.ts"
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Server error"
+                        }
+                    }
+                },
+                "delete": {
+                    "summary": "Delete todo by id",
+                    "tags": ["Todo"],
+                    "responses": {
+                        "200": {
+                            "description": "Delete todo by id.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "../schemas/todo-schema.ts"
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Server error"
+                        }
+                    }
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "Todo": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

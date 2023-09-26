@@ -1,0 +1,39 @@
+{
+    "name": "fullstack-todo",
+    "version": "1.0.0",
+    "description": "",
+    "main": ".eslintrc.js",
+    "private": false,
+    "scripts": {
+        "client": "cd client && yarn && yarn dev",
+        "server": "cd server && yarn && yarn dev",
+        "dev": "concurrently \"yarn run client\" \"yarn run server\"",
+        "build": "concurrently \"yarn run pre-build:client\" \"yarn run pre-build:server\"",
+        "pre-build:client": "cd client && yarn build",
+        "pre-build:server": "cd server && yarn build",
+        "lint": "eslint --debug client server",
+        "lint:write": "eslint --debug --fix client server",
+        "prettier": "prettier --write \"client/**/*.ts\" \"server/**/*.ts\"",
+        "prepare": "husky install"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "concurrently": "^8.2.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.50.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-standard": "^17.1.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-prettier": "^5.0.0",
+        "husky": "^8.0.0",
+        "prettier": "^3.0.3"
+    }
+}
