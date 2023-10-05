@@ -1,17 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from "typeorm";
+import { IsEmail, MinLength } from "class-validator";
 @Entity("users")
 export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
+    @Column({ type: "text" })
+    name: string;
+
+    @Column({ type: "text", unique: true, nullable: true })
+    @IsEmail()
     email: string;
 
-    @Column()
+    @Column({ type: "text", length: 100 })
+    @MinLength(2)
     password: string;
 
-    @Column()
+    @Column({ default: false })
     isActivated: boolean;
 
     @Column()
