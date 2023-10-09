@@ -20,7 +20,6 @@ export class TokenService {
     }
 
     async saveToken(id: number, refreshToken: string) {
-        // Змінено параметри методу saveToken
         let tokenData = await this.tokenRepository.findOne({ where: { id: id } });
 
         if (tokenData) {

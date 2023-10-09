@@ -5,14 +5,14 @@ export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "text" })
+    @Column()
     name: string;
 
-    @Column({ type: "text", unique: true, nullable: true })
+    @Column({ unique: true, nullable: true })
     @IsEmail()
     email: string;
 
-    @Column({ type: "text", length: 100 })
+    @Column({ length: 100 })
     @MinLength(2)
     password: string;
 

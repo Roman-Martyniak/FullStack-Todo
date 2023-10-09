@@ -1,27 +1,25 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
-const { SMPT_HOST } = process.env;
-const { SMPT_PORT } = process.env;
-const { SMPT_USER } = process.env;
-const { SMPT_PASSWORD } = process.env;
-const { API_URL } = process.env;
+const { SMPT_HOST, SMPT_PORT, SMPT_USER, SMPT_PASSWORD, API_URL } = process.env;
 
 class MailService {
     private transporter: nodemailer.Transporter;
     constructor() {
         this.transporter = nodemailer.createTransport({
-            host: "smtp.ukr.net",
-            port: 2525,
+            host: String(SMPT_HOST),
+            port: Number(SMPT_PORT),
             secure: true,
             auth: {
-                user: "roman.martyniakdev@ukr.net",
-                pass: "MRdBMo4XyQcKopWk",
+                user: String(SMPT_USER),
+                pass: String(SMPT_PASSWORD),
             },
         });
     }
     async sendActivationMail(to, link) {
         await this.transporter.sendMail({
-            from: "roman.martyniakdev@ukr.net",
+            from: String(SMPT_USER),
             to,
             subject: "Activation account" + API_URL,
             text: "",

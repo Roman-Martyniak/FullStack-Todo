@@ -1,4 +1,4 @@
 node_modules
 todo.md
-yarn.lock
 .idea
+yarn-error.log

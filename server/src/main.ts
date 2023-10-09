@@ -10,7 +10,6 @@ import cookieParser from "cookie-parser";
 import "reflect-metadata";
 
 import { todoRouter } from "./routes/api/todo-router";
-import { HttpError } from "./helpers/HttpError";
 import * as Swagger from "./swagger/openApi.json";
 import { userRouter } from "./routes/api/users";
 import { AppDataSource } from "typeorm.config";

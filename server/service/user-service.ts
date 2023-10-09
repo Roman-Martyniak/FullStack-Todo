@@ -9,8 +9,8 @@ import mailService from "./mail-service";
 import TokenService from "./token-service";
 import { UserDto } from "../dto/user-dto";
 import { TokenEntity } from "entity/Token";
-import tokenRepository from "repositories/TokenRepository";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const { API_URL } = process.env;
@@ -19,7 +19,10 @@ export class UserService {
     constructor(
         private userRepository: Repository<UserEntity>,
         private tokenRepository: Repository<TokenEntity>
-    ) {}
+    ) {
+        this.userRepository = AppDataSource.getRepository(UserEntity);
+        this.tokenRepository = AppDataSource.getRepository(TokenEntity);
+    }
 
     async registration(name: string, email: string, password: string, tokenService: TokenService) {
         const candidate = await this.userRepository.findOne({ where: { email: email } });
@@ -36,11 +39,14 @@ export class UserService {
             activationLink,
             isActivated: false,
         });
-        await mailService.sendActivationMail(email, `${API_URL}/activate/${activationLink}`);
+
+        await mailService.sendActivationMail(email, `${API_URL}/users/activate/:${activationLink}`);
 
         const userDto = new UserDto(user); // id, email, isActivated
         const tokens = tokenService.generateTokens({ ...userDto });
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+        await this.userRepository.save(user);
 
         return { ...tokens, user: userDto };
     }
@@ -99,5 +105,10 @@ export class UserService {
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
         return { ...tokens, user: userDto };
+    }
+
+    async getUsers() {
+        const user = this.userRepository.find();
+        return user;
     }
 }
