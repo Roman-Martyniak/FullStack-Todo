@@ -1,20 +1,19 @@
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { deleteTodo, changeTodo } from "../../redux/todoSlice";
+import { deleteTodo, changeTodo, changeTodoCompleted } from "../../redux/todoSlice";
 import { toastListError } from "../notify/notify";
 import { useState } from "react";
 
 const List = () => {
     const [newTodo, setNewTodo] = useState("");
     const [editTodoId, setEditTodoId] = useState<number | null>(null);
-    // const [originalTodo, setOriginalTodo] = useState("");
     const todos = useAppSelector(state => state.todos.todos);
     const dispatch = useAppDispatch();
 
     const handleChangeTodo = (id: number) => {
         const todoToEdit = todos.find(todo => todo.id === id);
         if (todoToEdit) {
-            // setOriginalTodo(todoToEdit.todos);
+            setNewTodo(todoToEdit.todo);
             setEditTodoId(id);
         }
     };
@@ -25,11 +24,9 @@ const List = () => {
             .then(() => {
                 setEditTodoId(null);
                 setNewTodo("");
-                toast("Todo was successfully changed:)");
             })
             .catch(error => {
                 console.log("Error changing todo:", error);
-                toastListError();
             });
     };
 
@@ -50,9 +47,20 @@ const List = () => {
             });
     };
 
-    if (!Array.isArray(todos)) {
-        return null;
-    }
+    const handleCheckboxChange = (id: number) => {
+        const todoToChange = todos.find(todo => todo.id === id);
+        if (!todoToChange) {
+            return;
+        }
+
+        const newCompletedValue = !todoToChange.completed;
+
+        dispatch(changeTodoCompleted({ id, completed: newCompletedValue }))
+            .then(() => {})
+            .catch(error => {
+                console.log("Error changing todo:", error);
+            });
+    };
 
     return (
         <div>
@@ -63,10 +71,15 @@ const List = () => {
                             <div>
                                 <input type="text" value={newTodo} onChange={e => setNewTodo(e.target.value)} />
                                 <button onClick={() => handleSaveTodo(todo.id)}>Save</button>
-                                <button onClick={handleCancelEdit}>Cancel</button>
+                                <button onClick={() => setEditTodoId(null)}>Cancel</button>
                             </div>
                         ) : (
                             <div>
+                                <input
+                                    type="checkbox"
+                                    checked={todo.completed}
+                                    onChange={() => handleCheckboxChange(todo.id)}
+                                />
                                 {todo.todo}
                                 <button onClick={() => handleChangeTodo(todo.id)}>Change</button>
                                 <button onClick={() => handleDelete(todo.id)}>Delete</button>

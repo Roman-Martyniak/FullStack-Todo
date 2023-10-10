@@ -22,6 +22,9 @@ todoRouter.get("/:id", TodoController.getTodo.bind(TodoController));
 // POST
 todoRouter.post("/", validateMiddleware, TodoController.addTodo.bind(TodoController));
 
+// PUT:/Completed
+todoRouter.put("/:id/completed", validateEmptyBody, TodoController.changeCompleted.bind(TodoController));
+
 // PUT
 todoRouter.put("/:id", validateEmptyBody, TodoController.updateTodo.bind(TodoController));
 

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Repository } from "typeorm";
-import { TokenEntity } from "../src/entity/Token";
+import { TokenEntity } from "../entity/Token";
 
 dotenv.config();
 const ACCESS_TOKEN = process.env.JWT_ACCESS_SECRET_KEY || "";

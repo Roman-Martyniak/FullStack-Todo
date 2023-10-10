@@ -7,8 +7,8 @@ export const fetchTodos = createAsyncThunk<Todo[], void, { rejectValue: string }
     "todos/fetchTodos",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get<{ data: Todo[] }>("http://localhost:9000/api/todo");
-            return response.data.data;
+            const response = await axios.get<Todo[]>("http://localhost:9000/api/todo");
+            return response.data;
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return rejectWithValue(error.message);
@@ -43,6 +43,21 @@ export const changeTodo = createAsyncThunk<number, { id: number; todo: string },
                 todo: todo,
             });
             return id;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return rejectWithValue(error.message);
+            }
+            throw error;
+        }
+    }
+);
+
+export const changeTodoCompleted = createAsyncThunk(
+    "todos/changeTodoCompleted",
+    async ({ id, completed }: { id: number; completed: boolean }, { rejectWithValue }) => {
+        try {
+            await axios.put(`http://localhost:9000/api/todo/${id}/completed`, { completed: completed });
+            return { id, completed };
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 return rejectWithValue(error.message);
@@ -91,6 +106,22 @@ const todoSlice = createSlice({
             .addCase(deleteTodo.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.todos = state.todos.filter(todo => todo.id !== action.payload);
+            })
+            .addCase(changeTodo.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                const index = state.todos.findIndex(todo => todo.id === action.payload);
+                if (index !== -1) {
+                    // @ts-ignore
+                    state.todos[index] = action.payload;
+                }
+            })
+            // Додайте changeTodoCompleted до extraReducers
+            .addCase(changeTodoCompleted.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                const index = state.todos.findIndex(todo => todo.id === action.payload.id);
+                if (index !== -1) {
+                    state.todos[index].completed = action.payload.completed;
+                }
             });
     },
 });

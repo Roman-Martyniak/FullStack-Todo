@@ -5,6 +5,9 @@ export class Quote {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "text", unique: true })
+    @Column()
     todo: string;
+
+    @Column()
+    completed: boolean;
 }

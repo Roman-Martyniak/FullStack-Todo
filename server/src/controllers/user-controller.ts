@@ -6,8 +6,8 @@ import { ApiError } from "helpers/ApiError";
 import { ApiResponse } from "../helpers";
 import { userRepository } from "repositories/UserRepository";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { UserService } from "../../service/user-service";
-import TokenService from "../../service/token-service";
+import { UserService } from "../service/user-service";
+import TokenService from "../service/token-service";
 import tokenRepository from "repositories/TokenRepository";
 
 dotenv.config();
@@ -81,7 +81,7 @@ export class UserController {
         }
     }
 
-    @Post("/refresh")
+    @Get("/refresh")
     async refresh(@Req() req: Request, @Res() res: Response, next: NextFunction) {
         try {
             const { refreshToken } = req.cookies;

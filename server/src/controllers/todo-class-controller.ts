@@ -1,10 +1,11 @@
-import { JsonController, Get, Post, Put, Delete, Param, Body, Res, HttpError, Req } from "routing-controllers";
+import { JsonController, Get, Post, Put, Delete, Res, Req, Body, Param } from "routing-controllers";
 import { Repository } from "typeorm";
 import { ApiResponse } from "../helpers/ApiRespose";
 import { AppDataSource } from "../typeorm.config";
 import { Request, Response } from "express";
 import { Quote } from "../entity/Todo";
 import { ApiError } from "../helpers/ApiError";
+import { todoRepository } from "../routes/api/todo-router";
 
 @JsonController("/todo")
 export class TodoClassController {
@@ -16,8 +17,7 @@ export class TodoClassController {
     async getAll(@Req() req: Request, @Res() res: Response) {
         try {
             const todos = await this.todoRepository.find();
-            const apiResponse = new ApiResponse(true, todos);
-            return res.json(apiResponse);
+            return res.status(200).json(todos);
         } catch (error) {
             console.error(error);
             throw new ApiError(500, { message: "Помилка при виконанні запиту до бази даних" });
@@ -48,22 +48,23 @@ export class TodoClassController {
     @Post()
     async addTodo(@Req() req: Request, @Res() res: Response) {
         const { todo } = req.body;
+
         if (!todo) {
             return res.status(400).json({ message: "Error creating todo" });
         }
         try {
-            const newTodo = this.todoRepository.create({ todo });
+            const newTodo = this.todoRepository.create({ todo: todo, completed: false }); // Додав completed: false
             await this.todoRepository.save(newTodo);
             console.log(`Додано новий запис до todo: ${todo}`);
             const apiResponse = new ApiResponse(true, newTodo, "Запис успішно додано до бази даних");
-            return res.status(201).json(apiResponse);
+            res.status(201).json(apiResponse);
         } catch (error) {
             console.error(error);
             throw new ApiError(500, { message: "Помилка при виконанні запиту до бази даних" });
         }
     }
 
-    @Put()
+    @Put("/:id")
     async updateTodo(@Req() req: Request, @Res() res: Response) {
         const { todo } = req.body;
         const { id } = req.params;
@@ -88,7 +89,28 @@ export class TodoClassController {
         }
     }
 
-    @Delete()
+    @Put("/:id/completed")
+    async changeCompleted(@Req() req: Request, @Res() res: Response) {
+        const { completed } = req.body;
+        const { id } = req.params;
+        try {
+            const todo = await this.todoRepository.findOne({ where: { id: Number(id) } });
+
+            if (!todo) {
+                return res.status(404).json({ message: "Todo not found" });
+            }
+
+            todo.completed = req.body.completed;
+            await this.todoRepository.save(todo);
+
+            return res.status(200).json({ message: "Todo completed status updated" });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Error updating todo completed status" });
+        }
+    }
+
+    @Delete("/:id")
     async deleteTodo(@Req() req: Request, @Res() res: Response) {
         const { id } = req.params;
         try {

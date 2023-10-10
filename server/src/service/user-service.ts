@@ -1,13 +1,13 @@
 import { Repository } from "typeorm";
 
-import UserEntity from "../src/entity/User";
+import UserEntity from "../entity/User";
 import bcrypt from "bcrypt";
 import { AppDataSource } from "typeorm.config";
 import { ApiError } from "helpers";
 import { v4 as uuidv4 } from "uuid";
 import mailService from "./mail-service";
 import TokenService from "./token-service";
-import { UserDto } from "../dto/user-dto";
+import { UserDto } from "../../dto/user-dto";
 import { TokenEntity } from "entity/Token";
 import dotenv from "dotenv";
 
