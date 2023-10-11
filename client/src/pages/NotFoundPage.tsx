@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorImage from "../../dist/Ilustration.jpg";
+import ErrorImage from "../../dist/assets/Ilustration-41f835fd.jpg";
 import "../pages/styles/NotFoundPage.scss";
 import { Link } from "react-router-dom";
 
