@@ -1,0 +1,165 @@
+.layout {
+
+  .form{
+    display: block;
+    width: 420px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px #ccc;
+
+    .form__input {
+     width: 100%;
+      padding: 0 0 10px 0;
+      border: none;
+      border-bottom: 1px solid #e0e0e0;
+      background-color: transparent;
+      color:#0E55A7;
+      outline: none;
+      transition: 0.3s;
+
+      &:focus {
+        border-bottom: 1px solid #1a73a8;
+        top: -18px;
+        font-size: 22px;
+        color:#0E55A7;
+      }
+
+    }
+
+    .form__label {
+      position: absolute;
+      top:0;
+      z-index: -1;
+      transition: 0.3s;
+
+      &:focus{
+        top: -18px;
+        font-size: 22px;
+        color:#0E55A7;
+      }
+    }
+
+    .form__button {
+      letter-spacing: 1px;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      background-color: #0E55A7;
+      outline: none;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:focus,
+      &:hover {
+        background-color: rgba(0, 133, 240, 0.7);
+      }
+    }
+
+    .form__title {
+      text-align: center;
+      margin: 0 0 32px 0;
+      font-weight: normal;
+      color: #0E55A7;
+    }
+
+    .form__group {
+      position: relative;
+      margin-bottom: 32px;
+    }
+      .form__input:focus ~ .form__label {
+
+      }
+
+    .form__text {
+      color: #0E55A7;
+      font-family: Lato;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 25px;
+      letter-spacing: -0.28px;
+    }
+
+    .form__link {
+      color: #0E55A7;
+      font-family: Lato;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 25px;
+      letter-spacing: -0.28px;
+      text-decoration-line: underline;
+    }
+
+    .form__line {
+      width: 100%;
+      height: 1px;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #0E55A7;
+    }
+
+    .form__link_container {
+      margin: auto;
+      display: flex;
+    }
+
+    .form__login_container {
+      width: 200px;
+    justify-content: end;
+    }
+
+
+    .form__link_login {
+      position: relative;
+      color: #0E55A7; /*задаём цвет ссылки*/
+      cursor: pointer;
+      line-height: 1; /*задаём высоту строки*/
+      text-decoration: none; /*убираем подчёркивание*/
+      &:after {
+        display: block;
+        position: absolute;
+        left: 0; /*изменить на right:0;, чтобы изменить направление подчёркивания */
+        width: 0;/*задаём длинну линии до наведения курсора*/
+        height: 2px; /*задаём ширину линии*/
+        background-color: #0E55A7; /*задаём цвет линии*/
+        content: "";
+        transition: width 0.3s ease-out; /*задаём время анимации*/
+      }
+      &:hover:after,
+      &:focus:after{
+        width: 100%;
+      }
+    }
+
+    .form__link_signup {
+      position: relative;
+      color: #0E55A7; /*задаём цвет ссылки*/
+      cursor: pointer;
+      line-height: 1; /*задаём высоту строки*/
+      text-decoration: none; /*убираем подчёркивание*/
+      &:after {
+        display: block;
+        position: absolute;
+        left: 0; /*изменить на right:0;, чтобы изменить направление подчёркивания */
+        width: 0;/*задаём длинну линии до наведения курсора*/
+        height: 2px; /*задаём ширину линии*/
+        background-color: #0E55A7; /*задаём цвет линии*/
+        content: "";
+        transition: width 0.3s ease-out; /*задаём время анимации*/
+      }
+      &:active {
+
+      }
+      &:hover:after,
+      &:focus:after{
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+
